@@ -1,6 +1,35 @@
 make clean
 make
 
+if [ $1 == "cic-unsw-nb15-DoS" ]; then
+
+#  echo "Preprocessing Graph Labels according to time_window and edge_threshold"
+#  python3 process_data.py DARPA 30 50
+
+  echo "Running AnoEdge-G"
+  # Algorithm => anoedge_g
+  # Dataset => cic-unsw-nb15-DoS
+  # Rows => 2
+  # Buckets => 32
+  # Decay factor => 0.9
+  ./main anoedge_g $1 2 9 0.9
+
+  echo "Running AnoEdge-L"
+  # Algorithm => anoedge_g
+  # Dataset => cic-unsw-nb15-DoS
+  # Rows => 2
+  # Buckets => 32
+  # Decay factor => 0.9
+  ./main anoedge_l $1 2 9 0.9
+
+  echo "Installing python dependencies"
+  pip3 install -r requirements.txt -q
+
+  echo "Running python metrics"
+  python3 metrics.py --dataset $1 --time_window 30 --edge_threshold 50
+
+fi
+
 if [ $1 == "DARPA" ]; then
 
 #  echo "Preprocessing Graph Labels according to time_window and edge_threshold"

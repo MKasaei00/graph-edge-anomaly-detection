@@ -34,7 +34,7 @@ def run_with_dataset(dataset_name):
 
 
 if __name__ == "__main__":
-    datasets = ["DARPA", "ISCX", "IDS2018", "DDOS2019", "EdgeAnomalyEPlusPlus"]
+    datasets = ["DARPA", "ISCX", "IDS2018", "DDOS2019", "EdgeAnomalyEPlusPlus", "cic-unsw-nb15-DoS"]
     if args.dataset in datasets:
         run_with_dataset(args.dataset)
     else:
