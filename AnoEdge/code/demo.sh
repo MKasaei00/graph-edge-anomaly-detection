@@ -10,7 +10,7 @@ if [ $1 == "cic-unsw-nb15-DoS" ]; then
   # Algorithm => anoedge_g
   # Dataset => cic-unsw-nb15-DoS
   # Rows => 2
-  # Buckets => 32
+  # Buckets => 9
   # Decay factor => 0.9
   ./main anoedge_g $1 2 9 0.9
 
@@ -18,7 +18,7 @@ if [ $1 == "cic-unsw-nb15-DoS" ]; then
   # Algorithm => anoedge_g
   # Dataset => cic-unsw-nb15-DoS
   # Rows => 2
-  # Buckets => 32
+  # Buckets => 9
   # Decay factor => 0.9
   ./main anoedge_l $1 2 9 0.9
 
