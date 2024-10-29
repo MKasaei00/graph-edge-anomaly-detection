@@ -23,39 +23,22 @@ AnoedgeGlobal::AnoedgeGlobal(string _algorithm, string _dataset_name, int _rows,
 vector<double> AnoedgeGlobal::getScores() {
     vector<double> scores;
     Hcms count(rows, buckets);
-    Hcms count2(rows, buckets);
-    Hcms count3(rows, buckets);
 
     size_t num_records = src.size();
     int last_time = 0;
 
     double current_factor = 0.9;
-    double current_factor2 = 0.7;
-//    double current_factor3 = 0.5;
 
     for (size_t i = 0; i < num_records; i++) {
         if (times[i] - last_time > 0) {
             count.decay(current_factor);
-//            count2.decay(current_factor2);
-//            count3.decay(current_factor3);
         }
 
         count.insert(src[i], dst[i], 1);
-//        count2.insert(src[i], dst[i], 1);
-//        count3.insert(src[i], dst[i], 1);
 
         double score = count.getAnoedgeglobalScore(algorithm, src[i], dst[i]);
-//        double score2 = count2.getAnoedgeglobalScore(algorithm, src[i], dst[i]);
-//        double value1 = count.getValue(src[i], dst[i]) * dst.size();
-//        double value2 = count2.getValue(src[i], dst[i]) * dst.size();
-//        double score3 = count3.getAnoedgeglobalScore(algorithm, src[i], dst[i]);
-
-//        double stepScores[3]{score, score2, score3};
-//        sort(stepScores, stepScores + 3);
-//        double weights[3]{0.7, 0.2, 0.1};
 
         double final_score = score;
-//        double final_score = stepScores[0] * weights[0] + stepScores[1] * weights[1] + stepScores[2] * weights[2];
         scores.push_back(final_score);
         last_time = times[i];
     }
