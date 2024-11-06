@@ -3,9 +3,11 @@
 
 # results files
 results/*.csv
+results/*.zip
 
 # preprocessed data labels
 data/*/Label_*_*.csv
+data/*/Label_*_*.zip
 
 # main executable file
 main
