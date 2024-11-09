@@ -16,6 +16,7 @@ class Hcms {
 
         double getAnoedgeglobalScore(string algorithm, int src, int dst);
         double getValue(int src, int dst);
+        double getSum();
 
         void intializeDenseSubmatrices();
         void decay(double decay_factor, bool flag);

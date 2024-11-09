@@ -79,6 +79,19 @@ double Hcms::getValue(int src, int dst) {
     return min_value;
 }
 
+double Hcms::getSum() {
+    double sum = 0;
+    for (int i = 0; i < num_rows; i++) {
+        for (int j = 0; j < num_buckets; ++j) {
+            for (int k = 0; k < num_buckets; ++k) {
+                double cur_value = count[i][j][k];
+                sum += cur_value;
+            }
+        }
+    }
+    return sum / num_rows;
+}
+
 double Hcms::getAnoedgeglobalScore(string algorithm, int src, int dst) {
     double min_dsubgraph = numeric_limits<double>::max();
     for (int i = 0; i < num_rows; i++) {
