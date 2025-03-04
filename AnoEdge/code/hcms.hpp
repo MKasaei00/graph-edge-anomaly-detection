@@ -23,19 +23,9 @@ public:
 
     double getSum();
 
-    void intializeDenseSubmatrices();
-
     void decay(double decay_factor, bool flag);
 
-    double getMin();
-
-    double getQ1();
-
-    double getMedian();
-
-    double getQ3();
-
-    double getMax();
+    vector<double> getRangeValues();
 
 private:
     int num_rows;

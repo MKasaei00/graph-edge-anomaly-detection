@@ -25,7 +25,7 @@ AnoedgeGlobal::AnoedgeGlobal(string _algorithm, string _dataset_name, int _rows,
 vector<double> AnoedgeGlobal::getScores() {
 
     bool enableSumLogging = false;
-    bool enableQLogging = true;
+    bool enableQLogging = false;
 
     vector<double> scores;
     Hcms count(rows, buckets);
@@ -61,11 +61,12 @@ vector<double> AnoedgeGlobal::getScores() {
         }
 
         if (enableQLogging) {
-            statsMin.push_back(count.getMin());
-            statsQ1.push_back(count.getQ1());
-            statsQ2.push_back(count.getMedian());
-            statsQ3.push_back(count.getQ3());
-            statsMax.push_back(count.getMax());
+            vector<double> boxes = count.getRangeValues();
+            statsMin.push_back(boxes[0]);
+            statsQ1.push_back(boxes[1]);
+            statsQ2.push_back(boxes[2]);
+            statsQ3.push_back(boxes[3]);
+            statsMax.push_back(boxes[4]);
         }
 
         last_time = times[i];

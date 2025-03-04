@@ -51,32 +51,24 @@ void Hcms::insert(int a, int b, double weight) {
     }
 }
 
-double Hcms::getMin() {
-    vector<double> values = getAllValues();
-    return *min_element(values.begin(), values.end());
-}
-
-double Hcms::getMax() {
-    vector<double> values = getAllValues();
-    return *max_element(values.begin(), values.end());
-}
-
-double Hcms::getQ1() {
+vector<double> Hcms::getRangeValues() {
     vector<double> values = getAllValues();
     sort(values.begin(), values.end());
-    return values[values.size() / 4];
-}
 
-double Hcms::getMedian() {
-    vector<double> values = getAllValues();
-    sort(values.begin(), values.end());
-    return values[values.size() / 2];
-}
+    double min = values[0];
+    double q1 = values[values.size() / 4];
+    double q2 = values[2 * values.size() / 4];
+    double q3 = values[3 * values.size() / 4];
+    double max = values[values.size() - 1];
 
-double Hcms::getQ3() {
-    vector<double> values = getAllValues();
-    sort(values.begin(), values.end());
-    return values[3 * values.size() / 4];
+    vector<double> result;
+    result.push_back(min);
+    result.push_back(q1);
+    result.push_back(q2);
+    result.push_back(q3);
+    result.push_back(max);
+
+    return result;
 }
 
 vector<double> Hcms::getAllValues() {
