@@ -1,5 +1,6 @@
 #include <iostream>
 #include <algorithm>
+#include <limits>
 
 #include "hcms.hpp"
 #include "anoedgeglobal.hpp"
