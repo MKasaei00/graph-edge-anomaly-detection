@@ -1,7 +1,7 @@
 make clean
 make
 
-if [ $1 == "cic-unsw-nb15-DoS" ]; then
+if [ "$1" == "cic-unsw-nb15-DoS" ]; then
 
 #  echo "Preprocessing Graph Labels according to time_window and edge_threshold"
 #  python3 process_data.py DARPA 30 50
@@ -12,7 +12,7 @@ if [ $1 == "cic-unsw-nb15-DoS" ]; then
   # Rows => 2
   # Buckets => 9
   # Decay factor => 0.9
-  ./main anoedge_g $1 2 9 0.9
+  ./main anoedge_g "$1" 2 9 0.9
 
   echo "Running AnoEdge-L"
   # Algorithm => anoedge_g
@@ -20,17 +20,17 @@ if [ $1 == "cic-unsw-nb15-DoS" ]; then
   # Rows => 2
   # Buckets => 9
   # Decay factor => 0.9
-  ./main anoedge_l $1 2 9 0.9
+  ./main anoedge_l "$1" 2 9 0.9
 
   echo "Installing python dependencies"
   pip3 install -r requirements.txt -q
 
   echo "Running python metrics"
-  python3 metrics.py --dataset $1 --time_window 30 --edge_threshold 50
+  python3 metrics.py --dataset "$1" --time_window 30 --edge_threshold 50
 
 fi
 
-if [ $1 == "DARPA" ]; then
+if [ "$1" == "DARPA" ]; then
 
 #  echo "Preprocessing Graph Labels according to time_window and edge_threshold"
 #  python3 process_data.py DARPA 30 50
@@ -52,14 +52,14 @@ if [ $1 == "DARPA" ]; then
   ./main anoedge_l DARPA 2 32 0.9
 
   echo "Installing python dependencies"
-  pip3 install -r requirements.txt -q
+  ~/envs/local/bin/pip install -r requirements.txt
 
   echo "Running python metrics"
-  python3 metrics.py --dataset DARPA --time_window 30 --edge_threshold 50
+  ~/envs/local/bin/python metrics.py --dataset DARPA --time_window 30 --edge_threshold 50
 
 fi
 
-if [ $1 == "ISCX" ]; then
+if [ "$1" == "ISCX" ]; then
 
   echo "Preprocessing Graph Labels according to time_window and edge_threshold"
   python3 process_data.py ISCX 60 100
@@ -74,7 +74,7 @@ if [ $1 == "ISCX" ]; then
 
 fi
 
-if [ $1 == "EdgeAnomalyEPlusPlus" ]; then
+if [ "$1" == "EdgeAnomalyEPlusPlus" ]; then
 
 #  echo "Preprocessing Graph Labels according to time_window and edge_threshold"
 #  python3 process_data.py DARPA 30 50
