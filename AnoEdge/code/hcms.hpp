@@ -2,7 +2,6 @@
 #define hcms_hpp
 
 #include <vector>
-#include "anoedgelocal.hpp"
 
 using namespace std;
 
@@ -28,12 +27,6 @@ public:
 
     void decay(double decay_factor, bool flag);
 
-    double getAnoedgelocalScore(string algorithm, int src, int dst);
-
-    double getAnographScore(string algorithm);
-
-    double getAnographKScore(string algorithm, int K);
-
     double getMin();
 
     double getQ1();
@@ -44,8 +37,6 @@ public:
 
     double getMax();
 
-    vector<double> getSections();
-
 private:
     int num_rows;
     int num_buckets;
@@ -54,11 +45,11 @@ private:
 
     vector<int> hash_a, hash_b;
     vector<vector<vector<double>>> count;
-    vector<vector<Submatrix>> densest_matrices;
 
     int hash(int elem, int i);
 
     double getCount(int a, int b);
+    vector<double> getAllValues();
 };
 
 #endif

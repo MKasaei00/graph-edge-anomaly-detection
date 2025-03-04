@@ -4,7 +4,6 @@
 
 #include "hcms.hpp"
 #include "anoedgeglobal.hpp"
-#include "anoedgelocal.hpp"
 #include "utils.hpp"
 
 using namespace std;
@@ -82,9 +81,9 @@ double Hcms::getQ3() {
 
 vector<double> Hcms::getAllValues() {
     vector<double> values;
-    for (const auto& row : count) {
-        for (const auto& bucket : row) {
-            for (double value : bucket) {
+    for (const auto &row: count) {
+        for (const auto &bucket: row) {
+            for (double value: bucket) {
                 values.push_back(value);
             }
         }
@@ -93,5 +92,76 @@ vector<double> Hcms::getAllValues() {
 }
 
 void Hcms::clear() {
-    count = vector<vector<vector<double>>>(num_rows, vector<vector<double>>(num_buckets, vector<double>(num_buckets, 0.0)));
+    count = vector<vector<vector<double>>>(num_rows,
+                                           vector<vector<double>>(num_buckets, vector<double>(num_buckets, 0.0)));
 }
+
+void Hcms::decay(double decay_factor, bool flag) {
+    for (int i = 0; i < num_rows; i++) {
+        for (int j = 0; j < num_buckets; j++) {
+            for (int k = 0; k < num_buckets; k++) {
+                count[i][j][k] = count[i][j][k] * decay_factor;
+            }
+        }
+    }
+}
+
+
+double Hcms::getAnoedgeglobalScore(string algorithm, int src, int dst) {
+    double min_dsubgraph = numeric_limits<double>::max();
+    for (int i = 0; i < num_rows; i++) {
+        int src_bucket = hash(src, i);
+        int dst_bucket = hash(dst, i);
+        double cur_dsubgraph = AnoedgeGlobal::getAnoedgeglobalDensity(count[i], src_bucket, dst_bucket);
+        min_dsubgraph = MIN(min_dsubgraph, cur_dsubgraph);
+    }
+    return min_dsubgraph;
+}
+
+double Hcms::getSum() {
+    double sum = 0;
+    for (int i = 0; i < num_rows; i++) {
+        for (int j = 0; j < num_buckets; ++j) {
+            for (int k = 0; k < num_buckets; ++k) {
+                double cur_value = count[i][j][k];
+                sum += cur_value;
+            }
+        }
+    }
+    return sum / num_rows;
+}
+
+
+double Hcms::getValue(int src, int dst) {
+    double min_value = numeric_limits<double>::max();
+    for (int i = 0; i < num_rows; i++) {
+        int src_bucket = hash(src, i);
+        int dst_bucket = hash(dst, i);
+        double cur_value = count[i][src_bucket][dst_bucket];
+        min_value = MIN(min_value, cur_value);
+    }
+    return min_value;
+}
+
+
+void Hcms::decay(double decay_factor) {
+    for (int i = 0; i < num_rows; i++) {
+        for (int j = 0; j < num_buckets; j++) {
+            for (int k = 0; k < num_buckets; k++) {
+                count[i][j][k] = count[i][j][k] * decay_factor;
+            }
+        }
+    }
+}
+
+
+double Hcms::getCount(int a, int b) {
+    double min_count = numeric_limits<double>::max();
+    for (int i = 0; i < num_rows; i++) {
+        int a_bucket = hash(a, i);
+        int b_bucket = hash(b, i);
+        min_count = MIN(min_count, count[i][a_bucket][b_bucket]);
+    }
+    return min_count;
+}
+
