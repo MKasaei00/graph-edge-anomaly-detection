@@ -16,7 +16,8 @@ class AnoedgeGlobal {
 		double decay_factor;
 		vector<int> src, dst, times, labels;
 
-		vector<double> getScores();
+        vector<double> getScores();
+        void writeIntoFile(vector<double> values, string name);
 };
 
 #endif

@@ -20,6 +20,7 @@ Hcms::Hcms(int r, int b) {
         hash_b[i] = rand() % num_buckets;
     }
     this->clear();
+    sum = 0;
 }
 
 Hcms::Hcms(int r, int b, int d) {
@@ -34,6 +35,7 @@ Hcms::Hcms(int r, int b, int d) {
         hash_b[i] = rand() % num_buckets;
     }
     this->clear();
+    sum = 0;
 }
 
 int Hcms::hash(int elem, int i) {
@@ -46,124 +48,48 @@ void Hcms::insert(int a, int b, double weight) {
         int a_bucket = hash(a, i);
         int b_bucket = hash(b, i);
         count[i][a_bucket][b_bucket] += weight;
+        sum += weight;
     }
 }
 
-double Hcms::getCount(int a, int b) {
-    double min_count = numeric_limits<double>::max();
-    for (int i = 0; i < num_rows; i++) {
-        int a_bucket = hash(a, i);
-        int b_bucket = hash(b, i);
-        min_count = MIN(min_count, count[i][a_bucket][b_bucket]);
-    }
-    return min_count;
+double Hcms::getMin() {
+    vector<double> values = getAllValues();
+    return *min_element(values.begin(), values.end());
 }
 
-void Hcms::decay(double decay_factor) {
-    for (int i = 0; i < num_rows; i++) {
-        for (int j = 0; j < num_buckets; j++) {
-            for (int k = 0; k < num_buckets; k++) {
-                count[i][j][k] = count[i][j][k] * decay_factor;
+double Hcms::getMax() {
+    vector<double> values = getAllValues();
+    return *max_element(values.begin(), values.end());
+}
+
+double Hcms::getQ1() {
+    vector<double> values = getAllValues();
+    sort(values.begin(), values.end());
+    return values[values.size() / 4];
+}
+
+double Hcms::getMedian() {
+    vector<double> values = getAllValues();
+    sort(values.begin(), values.end());
+    return values[values.size() / 2];
+}
+
+double Hcms::getQ3() {
+    vector<double> values = getAllValues();
+    sort(values.begin(), values.end());
+    return values[3 * values.size() / 4];
+}
+
+vector<double> Hcms::getAllValues() {
+    vector<double> values;
+    for (const auto& row : count) {
+        for (const auto& bucket : row) {
+            for (double value : bucket) {
+                values.push_back(value);
             }
         }
     }
-}
-
-double Hcms::getValue(int src, int dst) {
-    double min_value = numeric_limits<double>::max();
-    for (int i = 0; i < num_rows; i++) {
-        int src_bucket = hash(src, i);
-        int dst_bucket = hash(dst, i);
-        double cur_value = count[i][src_bucket][dst_bucket];
-        min_value = MIN(min_value, cur_value);
-    }
-    return min_value;
-}
-
-double Hcms::getSum() {
-    double sum = 0;
-    for (int i = 0; i < num_rows; i++) {
-        for (int j = 0; j < num_buckets; ++j) {
-            for (int k = 0; k < num_buckets; ++k) {
-                double cur_value = count[i][j][k];
-                sum += cur_value;
-            }
-        }
-    }
-    return sum / num_rows;
-}
-
-double Hcms::getAnoedgeglobalScore(string algorithm, int src, int dst) {
-    double min_dsubgraph = numeric_limits<double>::max();
-    for (int i = 0; i < num_rows; i++) {
-        int src_bucket = hash(src, i);
-        int dst_bucket = hash(dst, i);
-        double cur_dsubgraph = AnoedgeGlobal::getAnoedgeglobalDensity(count[i], src_bucket, dst_bucket);
-        min_dsubgraph = MIN(min_dsubgraph, cur_dsubgraph);
-    }
-    return min_dsubgraph;
-}
-
-void Hcms::intializeDenseSubmatrices() {
-    for (int i = 0; i < num_rows; i++) {
-        vector<Submatrix> cur_dense_submatrix;
-        vector<pair<double, pair<int, int>>> flat_counts;
-        for (int j = 0; j < num_buckets; j++) {
-            for (int k = 0; k < num_buckets; k++) {
-                flat_counts.push_back({count[i][j][k], {j, k}});
-            }
-        }
-        sort(flat_counts.begin(), flat_counts.end(), greater<pair<double, pair<int, int>>>());
-        for (int j = 0; j < num_dense_submatrices; j++) {
-            Submatrix initial_submatrix(j, j, 0.0);
-            cur_dense_submatrix.push_back(initial_submatrix);
-        }
-        densest_matrices.push_back(cur_dense_submatrix);
-    }
-}
-
-double Hcms::getAnoedgelocalScore(string algorithm, int src, int dst) {
-    double min_dsubgraph = numeric_limits<double>::max();
-    for (int i = 0; i < num_rows; i++) {
-        int src_bucket = hash(src, i);
-        int dst_bucket = hash(dst, i);
-
-        for (int j = 0; j < num_dense_submatrices; j++) {
-            if (densest_matrices[i][j].checkAndAdd(src_bucket, dst_bucket, count[i])) {
-                bool flag = true;
-                int del_cnt = -1;
-                while (flag) {
-                    flag = densest_matrices[i][j].checkAndDel(count[i]);
-                    del_cnt++;
-                }
-            }
-        }
-
-        double cur_dsubgraph = 0.0;
-        for (int j = 0; j < num_dense_submatrices; j++) {
-            double cur_likelihood = densest_matrices[i][j].getLikelihoodScore(src_bucket, dst_bucket, count[i]);
-            cur_dsubgraph = cur_dsubgraph + cur_likelihood;
-        }
-        min_dsubgraph = MIN(min_dsubgraph, cur_dsubgraph);
-    }
-    return min_dsubgraph;
-}
-
-void Hcms::decay(double decay_factor, bool flag) {
-    for (int i = 0; i < num_rows; i++) {
-        for (int j = 0; j < num_buckets; j++) {
-            for (int k = 0; k < num_buckets; k++) {
-                count[i][j][k] = count[i][j][k]*decay_factor;
-            }
-        }
-    }
-    if (flag) {
-        for (int i = 0; i < num_rows; i++) {
-            for (int j = 0; j < num_dense_submatrices; j++) {
-                densest_matrices[i][j].decay(decay_factor);
-            }
-        }
-    }
+    return values;
 }
 
 void Hcms::clear() {
