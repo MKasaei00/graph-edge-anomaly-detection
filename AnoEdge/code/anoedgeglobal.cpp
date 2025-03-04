@@ -3,6 +3,7 @@
 #include <algorithm>
 #include <cmath>
 #include <queue>
+#include <sstream>
 
 #include "anoedgeglobal.hpp"
 #include "hcms.hpp"
@@ -85,26 +86,23 @@ vector<double> AnoedgeGlobal::getScores() {
     return scores;
 }
 
-void AnoedgeGlobal::writeIntoFile(vector<double> values, string name) {
-
+void AnoedgeGlobal::writeIntoFile(const vector<double>& values, const string& name) {
     std::cout << "Vector to file started => " << name << std::endl;
 
-    // Open a file for writing
     std::ofstream outFile(name);
-
-    // Check if the file was opened successfully
     if (!outFile) {
         std::cerr << "Error opening file for writing!" << std::endl;
+        return;
     }
 
-    // Write each element of the vector to the file
-    for (const auto &element: values) {
-        outFile << element << std::endl; // Write each element followed by a newline
+    // Use a large buffer to reduce I/O operations
+    std::ostringstream buffer;
+    for (const auto& value : values) {
+        buffer << value << '\n';
     }
+    outFile << buffer.str(); // Write everything in one go
 
-    // Close the file
     outFile.close();
-
     std::cout << "Vector written to file successfully! => " << name << std::endl;
 }
 
