@@ -2,22 +2,26 @@
 #define anoedgeglobal_hpp
 
 #include <vector>
+
 using namespace std;
 
 class AnoedgeGlobal {
-    public:
-    	AnoedgeGlobal(string algorithm, string dataset_name, int rows, int buckets, double decay_factor);
-    	void run();
-    	static double getAnoedgeglobalDensity(vector<vector<double>>& mat, int src, int dst);
+public:
+    AnoedgeGlobal(string algorithm, string dataset_name, int rows, int buckets, double decay_factor);
 
-	private:
-		string algorithm, dataset_name;
-		int rows, buckets;
-		double decay_factor;
-		vector<int> src, dst, times, labels;
+    void run();
 
-        vector<double> getScores();
-        void writeIntoFile(vector<double> values, string name);
+    static double getAnoedgeglobalDensity(vector<vector<double>> &mat, int src, int dst);
+
+private:
+    string algorithm, dataset_name;
+    int rows, buckets;
+    double decay_factor;
+    vector<int> src, dst, times, labels;
+
+    vector<double> getScores();
+
+    void writeIntoFile(const vector<double> &values, const string &name);
 };
 
 #endif
