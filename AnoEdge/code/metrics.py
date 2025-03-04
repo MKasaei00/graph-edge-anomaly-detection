@@ -30,7 +30,7 @@ def print_auc_time(algorithm, dataset_name, file_name):
 
 def run_with_dataset(dataset_name):
     print_anoedge_auc_time(results_path, dataset_name, "anoedge_g")
-    print_anoedge_auc_time(results_path, dataset_name, "anoedge_l")
+    # print_anoedge_auc_time(results_path, dataset_name, "anoedge_l")
 
 
 if __name__ == "__main__":

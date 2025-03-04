@@ -43,16 +43,16 @@ if [ "$1" == "DARPA" ]; then
   # Decay factor => 0.9
   ./main anoedge_g DARPA 2 32 0.9
 
-  echo "Running AnoEdge-L"
+#  echo "Running AnoEdge-L"
   # Algorithm => anoedge_g
   # Dataset => DARPA
   # Rows => 2
   # Buckets => 32
   # Decay factor => 0.9
-  ./main anoedge_l DARPA 2 32 0.9
+#  ./main anoedge_l DARPA 2 32 0.9
 
   echo "Installing python dependencies"
-  ~/envs/local/bin/pip install -r requirements.txt
+  ~/envs/local/bin/pip install -r requirements.txt -q
 
   echo "Running python metrics"
   ~/envs/local/bin/python metrics.py --dataset DARPA --time_window 30 --edge_threshold 50
