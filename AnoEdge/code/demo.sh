@@ -102,3 +102,53 @@ if [ "$1" == "EdgeAnomalyEPlusPlus" ]; then
   python3 metrics.py --dataset EdgeAnomalyEPlusPlus --time_window 30 --edge_threshold 50
 
 fi
+
+if [ $1 == "IDS2018" ]; then
+
+#  echo "Preprocessing Graph Labels according to time_window and edge_threshold"
+#  python3 process_data.py IDS2018 60 100
+#
+#  echo "Running AnoGraph"
+#  ./main anograph IDS2018 60 100 2 32
+#
+#  echo "Running AnoGraph-K"
+#  ./main anograph_k IDS2018 60 100 2 32 5
+
+  echo "Running AnoEdge-G"
+  ./main anoedge_g IDS2018 2 32 0.9
+
+#  echo "Running AnoEdge-L"
+#  ./main anoedge_l IDS2018 2 32 0.9
+
+
+  echo "Installing python dependencies"
+  ~/envs/local/bin/pip install -r requirements.txt -q
+
+  echo "Running python metrics"
+  ~/envs/local/bin/python metrics.py --dataset IDS2018 --time_window 30 --edge_threshold 50
+fi
+
+if [ $1 == "DDOS2019" ]; then
+
+#  echo "Preprocessing Graph Labels according to time_window and edge_threshold"
+#  python3 process_data.py IDS2018 60 100
+#
+#  echo "Running AnoGraph"
+#  ./main anograph IDS2018 60 100 2 32
+#
+#  echo "Running AnoGraph-K"
+#  ./main anograph_k IDS2018 60 100 2 32 5
+
+  echo "Running AnoEdge-G"
+  ./main anoedge_g DDOS2019 2 32 0.9
+
+#  echo "Running AnoEdge-L"
+#  ./main anoedge_l IDS2018 2 32 0.9
+
+
+  echo "Installing python dependencies"
+  ~/envs/local/bin/pip install -r requirements.txt -q
+
+  echo "Running python metrics"
+  ~/envs/local/bin/python metrics.py --dataset DDOS2019 --time_window 30 --edge_threshold 50
+fi
