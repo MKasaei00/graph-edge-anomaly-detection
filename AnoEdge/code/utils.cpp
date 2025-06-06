@@ -32,7 +32,7 @@ void ReadUtils::loadEdgeData(vector<int>& src, vector<int>& dst, vector<int>& ti
     string edges_file = DATA_BASE_PATH + dataset_name + "/Data.csv";
 	FILE* edges_file_ptr = fopen(edges_file.c_str(), "r");
     if (edges_file_ptr == NULL) {
-        cerr << "Could not read file " << edges_file << "\n";
+        cerr << "Could not read data file " << edges_file << "\n";
         exit(0);
     }
 
@@ -49,7 +49,7 @@ void ReadUtils::loadEdgeLabelData(vector<int>& labels, string dataset_name) {
     string labels_file = DATA_BASE_PATH + dataset_name + "/Label.csv";
     FILE* labels_file_ptr = fopen(labels_file.c_str(), "r");
     if (labels_file_ptr == NULL) {
-        cerr << "Could not read file " << labels_file_ptr << "\n";
+        cerr << "Could not read labels file " << labels_file_ptr << "\n";
         exit(0);
     }
     int l;
@@ -65,7 +65,7 @@ void ReadUtils::loadGraphData(vector<pair<vector<int>, vector<int>>>& graphs, ve
 
 	FILE* labels_file_ptr = fopen(labels_file.c_str(), "r");
     if (labels_file_ptr == NULL) {
-        cerr << "Could not read file " << labels_file << "\n";
+        cerr << "Could not read windowing file " << labels_file << "\n";
         exit(0);
     }
     int l;
@@ -76,7 +76,7 @@ void ReadUtils::loadGraphData(vector<pair<vector<int>, vector<int>>>& graphs, ve
 
     FILE* graphs_file_ptr = fopen(graphs_file.c_str(), "r");
     if (graphs_file_ptr == NULL) {
-        cerr << "Could not read file " << graphs_file << "\n";
+        cerr << "Could not read windowing file " << graphs_file << "\n";
         exit(0);
     }
     int s, d, t;
