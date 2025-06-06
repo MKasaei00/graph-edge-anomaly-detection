@@ -34,8 +34,9 @@ def run_with_dataset(dataset_name):
 
 
 if __name__ == "__main__":
-    datasets = ["DARPA", "ISCX", "IDS2018", "DDOS2019", "EdgeAnomalyEPlusPlus", "cic-unsw-nb15-DoS"]
-    if args.dataset in datasets:
-        run_with_dataset(args.dataset)
-    else:
-        print(f"Could not detect dataset {args.dataset}")
+    run_with_dataset(args.dataset)
+    # datasets = ["DARPA", "ISCX", "IDS2018", "DDOS2019", "EdgeAnomalyEPlusPlus", "cic-unsw-nb15-DoS"]
+    # if args.dataset in datasets:
+    #     run_with_dataset(args.dataset)
+    # else:
+    #     print(f"Could not detect dataset {args.dataset}")
