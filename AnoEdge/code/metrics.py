@@ -1,6 +1,7 @@
 import pandas as pd
 import argparse
 from sklearn import metrics
+import os
 
 parser = argparse.ArgumentParser()
 parser.add_argument('--dataset', default='DARPA')
@@ -18,14 +19,17 @@ def print_anoedge_auc_time(base_path, dataset_name, algorithm):
 
 def print_auc_time(algorithm, dataset_name, file_name):
     data = pd.read_csv(file_name + "_score.csv", names=['score', 'label'], sep=" ")
-    time_values = pd.read_csv(file_name + "_time.csv", names=['avg', 'total'], sep=" ")
 
     fpr, tpr, _ = metrics.roc_curve(data.label, data.score)
     auc = metrics.roc_auc_score(data.label, data.score)
 
     print("%s,%s" % (algorithm, dataset_name))
     print("AUC: %.3f" % auc)
-    print("Time: %s\n" % (time_values["total"].iloc[1]))
+
+    time_file_path = file_name + "_time.csv"
+    if os.path.exists(time_file_path):
+        time_values = pd.read_csv(time_file_path, names=['avg', 'total'], sep=" ")
+        print("Time: %s\n" % (time_values["total"].iloc[1]))
 
 
 def run_with_dataset(dataset_name):
