@@ -1,7 +1,7 @@
 make clean
 make
 
-if [ "$1" == "DARPA" ]; then
+if [ "$1" == "DARPA" ] || [ "$1" == "ISCX" ] || [ "$1" == "IDS2018" ]; then
 
   # Clean state and remove files if required
   rm -rf ../data/${1}_*
@@ -21,7 +21,7 @@ if [ "$1" == "DARPA" ]; then
   # Buckets => 32
   # Decay factor => 0.9
   for i in $(seq 1 $2); do
-    id=$(printf "DARPA_%03d" "$i")
+    id=$(printf "${1}_%03d" "$i")
     ./main anoedge_g "$id" 2 32 0.9
     echo "$id run completed"
   done
@@ -34,5 +34,5 @@ if [ "$1" == "DARPA" ]; then
   ~/envs/local/bin/pip install -r requirements.txt -q
 
   # evaluate metrics AUCROC
-  ~/envs/local/bin/python metrics.py --dataset DARPA --time_window 30 --edge_threshold 50
+  ~/envs/local/bin/python metrics.py --dataset $1 --time_window 30 --edge_threshold 50
 fi
