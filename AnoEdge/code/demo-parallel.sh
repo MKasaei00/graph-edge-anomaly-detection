@@ -1,7 +1,7 @@
 make clean
 make
 
-if [ "$1" == "DARPA" ] || [ "$1" == "ISCX" ] || [ "$1" == "IDS2018" ]; then
+if [ "$1" == "DARPA" ] || [ "$1" == "ISCX" ] || [ "$1" == "IDS2018" ] || [ "$1" == "DDOS2019" ]; then
 
   # Clean state and remove files if required
   rm -rf ../data/${1}_*
