@@ -1,3 +1,7 @@
+# $1 = dataset name (e.g. DARPA)
+# $2 = number of parallel workers (k)
+# $3 = block size (p)
+
 make clean
 make
 
@@ -10,8 +14,8 @@ if [ "$1" == "DARPA" ] || [ "$1" == "ISCX" ] || [ "$1" == "IDS2018" ] || [ "$1" 
   rm -rf ../results/anoedge_g_${1}_score.csv
 
   # Partition data into p files for labels and data
-  ~/envs/local/bin/python split.py ../data/$1 Data.csv $2
-  ~/envs/local/bin/python split.py ../data/$1 Label.csv $2
+  ~/envs/local/bin/python split.py ../data/$1 Data.csv $2 $3
+  ~/envs/local/bin/python split.py ../data/$1 Label.csv $2 $3
   
   # run algorithm for every item
   echo "Running AnoEdge-G"
@@ -27,7 +31,7 @@ if [ "$1" == "DARPA" ] || [ "$1" == "ISCX" ] || [ "$1" == "IDS2018" ] || [ "$1" 
   done
 
   # Concat all the files in a way that can be done
-  ~/envs/local/bin/python recombine.py ../results $1 $2
+  ~/envs/local/bin/python recombine.py ../results $1 $2 $3
 
   # Install dependencies
   echo "Installing python dependencies"

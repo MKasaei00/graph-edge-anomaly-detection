@@ -1,7 +1,7 @@
 import os
 import argparse
 
-def parallelize_csv(dataset_directory, base_file_name, num_parallel, has_header=False):
+def parallelize_csv(dataset_directory, base_file_name, num_parallel, block_size, has_header=False):
     """
     Splits a large CSV file into smaller files based on round-robin distribution.
 
@@ -30,7 +30,9 @@ def parallelize_csv(dataset_directory, base_file_name, num_parallel, has_header=
                 outfile.write(header)
 
         for i, line in enumerate(infile):
-            output_files[i % num_parallel].write(line)
+            target_worker = ((i // block_size) % num_parallel)
+            output_files[target_worker].write(line)
+
 
     for outfile in output_files:
         outfile.close()
@@ -44,9 +46,10 @@ def main():
     parser.add_argument("base_file_name", help="Name of the CSV file (e.g., edges.csv).")
     parser.add_argument("num_parallel", type=int, help="Number of output files / parallel processes.")
     parser.add_argument("--has_header", action="store_true", help="Use this flag if the CSV file has a header row.")
+    parser.add_argument("block_size", type=int, help="Size of block to assign per worker (p)")
 
     args = parser.parse_args()
-    parallelize_csv(args.dataset_directory, args.base_file_name, args.num_parallel, args.has_header)
+    parallelize_csv(args.dataset_directory, args.base_file_name, args.num_parallel, args.block_size, args.has_header)
 
 if __name__ == "__main__":
     main()
